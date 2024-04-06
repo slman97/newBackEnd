@@ -1,40 +1,86 @@
-@extends('layouts.app')
-@section('content')
 
-    <div class="container-fluid">
-        <div class="col-md-6 offset-3 pt-4">
-            <h3 class="text-center">Change Password</h3>
-            @if($errors->any())
-            {!! implode('', $errors->all('<div style="color:red">:message</div>')) !!}
-            @endif
-            @if(Session::get('error') && Session::get('error') != null)
-            <div style="color:red">{{ Session::get('error') }}</div>
-            @php
-            Session::put('error', null)
-            @endphp
-            @endif
-            @if(Session::get('success') && Session::get('success') != null)
-            <div style="color:green">{{ Session::get('success') }}</div>
-            @php
-            Session::put('success', null)
-            @endphp
-            @endif
-            <form class="form" action="{{ route('postChangePassword') }}" method="post">
-                @csrf
-                <div class="mb-3">
-                    <label for="current_password" class="form-label">Current Password</label>
-                    <input type="password" class="form-control" id="current_password" name="current_password">
-                </div>
-                <div class="mb-3">
-                    <label for="new_password" class="form-label">New Password</label>
-                    <input type="password" class="form-control" id="new_password" name="new_password">
-                </div>
-                <div class="mb-3">
-                    <label for="new_password_confirmation" class="form-label">Confirm New Password</label>
-                    <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation">
-                </div>
-                <button type="submit" class="btn btn-primary text-center">Submit</button>
-            </form>
-        </div>
+    @extends('layouts.master')
+    @extends('layouts.sidebar')
+    @section('content')
+    <div class="alert alert-success" id="success_msg" style="display: none;">
+        password change successfly
     </div>
-    @endsection
+
+                                          <section class="content">
+                                                <div class="row">
+                                                  <!-- left column -->
+                                                  <div class="col-md-6">
+                                                    <!-- general form elements -->
+                                                    <div class="box box-primary">
+                                                      <div class="box-header">
+                                                        <h3 class="box-title">Change password</h3>
+                                                      </div><!-- /.box-header -->
+                                                      <!-- form start -->
+                                                      <form id="password" name="frm-login" method="POST" action="">
+                                                        @csrf
+                                                        <div class="box-body">
+                                                          <div class="form-group">
+                                                            <label for="current_password">Current Password:</label>
+                                                            <input name="current_password" type="password" class="form-control" id="exampleInputEmail1" placeholder="Type your current password">
+                                                            <small id="current_password_error" class="form-text text-danger"></small>
+                                                        </div>
+                                                          <div class="form-group">
+                                                            <label for="new_password">New Password:</label>
+                                                            <input name="new_password" type="password" class="form-control" id="exampleInputEmail1" placeholder="Type your New password">
+                                                            <small id="new_password_error" class="form-text text-danger"></small>
+                                                          </div>
+                                                          <div class="form-group">
+                                                            <label for="new_password_confirmation">Password</label>
+                                                            <input name="new_password_confirmation" type="password" class="form-control" id="exampleInputPassword1" placeholder="Type your New password confirmation">
+                                                            <small id="new_password_confirmation_error" class="form-text text-danger"></small>
+                                                          </div>
+                                                         
+                                                        </div><!-- /.box-body -->
+                                      
+                                                        <div class="box-footer">
+                                                            <button id= "save" class="btn btn-submit">
+                                                                Change password
+                                                            </button>
+                                                        </div>
+                                                      </form>
+                                                    </div>
+                                                </div> 
+                                              </section>
+                    
+                    
+                 
+        @endsection
+        @section('script')
+        <script>
+                    $(document).on('click', '#save', function (e) {
+                        e.preventDefault();
+             
+                        $('#current_password_error').text('');
+                        $('#new_password_error').text('');
+                        $('#new_password_confirmation_error').text('');
+
+                        
+                        var formData = new FormData($('#password')[0]);
+                
+                        $.ajax({
+                            type: 'post',
+                            url: "{{ route('postChangePassword') }}",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            cache: false,
+                            success: function (data) {
+                                $('#success_msg').show();
+                                
+                            }, error: function (reject) {
+                                var response = $.parseJSON(reject.responseText);
+                                $.each(response.errors, function (key, val) {
+                                    $("#" + key + "_error").text(val[0]);
+                                });
+                            }
+                        });
+                    });
+                </script>
+                
+        @endsection
+    

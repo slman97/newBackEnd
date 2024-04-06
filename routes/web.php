@@ -49,14 +49,15 @@ Route::controller(ProfileController::class)->group(function () {
     Route::get('/change-password','changePassword')->name('changePassword');
     Route::post('/change-password','changePasswordSave')->name('postChangePassword');
     Route::get('/profile/{user}','index')->name('profile.show');
-   
+    Route::get('/', 'checkprofile')->name('checkprofile');
+    Route::get('/dashbord', 'dashInfo')->name('dash.info');
 });
 
 //adnin route
 Route::middleware(AdminMiddleware::class)->group(function () {
 
     Route::controller(Admincontroller::class)->group(function () {
-        Route::get('/dashbord', 'dashInfo')->name('dash.info');
+        
         Route::get('/user/{user}/Product','userProduct')->name('admin.userProduct');
         Route::post('/admin/adduserprofile/{user_id}','addUserProfile')->name('admin.userProfile');
        

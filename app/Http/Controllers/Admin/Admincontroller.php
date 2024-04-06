@@ -13,9 +13,10 @@ class Admincontroller extends Controller
     public function dashInfo(){
         $productCount = Product::all()->count();
         $userCount = User::all()->count();
+        $authuserCount = User::where("code",null)->count();
         $adminCount = User::where('user_type','admin')->count();
 
-        return view('Admin.dashbord',compact('productCount','userCount','adminCount'));
+        return view('Admin.dashbord',compact('productCount','userCount','adminCount','authuserCount'));
     }
     
  

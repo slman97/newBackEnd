@@ -26,24 +26,9 @@ class userDataTable extends DataTable
                 $update = '<a href="' . Route('admin.userEdit', $row->id) . '"  class="edit btn btn-success btn-sm" >update user</a>';
                 return $update;
             })
-            ->addColumn('user profile', function ($row) {
-                if (is_null(User::find($row->id)->profile)) 
-                {
-                     $profile = '
-                     <form action ="" method="post">
-                           <button id="addUserProfile" class="edit btn btn-success btn-sm">
-                           add profile
-                           </button>
-                    </form>'; 
-                }
-                else
-                {
-                    $profile =   "user have profile";
-                }
-                return $profile;
-            })
+            ->addColumn('user profile','ajax.addprofile')
             
-            ->addColumn('delete Product', function ($row) {
+            ->addColumn('delete user', function ($row) {
                 if(User::find($row->id)->user_type == "admin")
                 {
                 $delete = "the user is admin";
@@ -58,7 +43,7 @@ class userDataTable extends DataTable
                 }
                
                 return $delete;
-            })->rawColumns(['delete Product', 'update user','user profile'])
+            })->rawColumns(['delete user', 'update user','user profile'])
            ;
     }
 
@@ -103,7 +88,7 @@ class userDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id','user_type','firstname','lastname','phone','email','update user','delete Product','user profile'
+            'id','user_type','firstname','lastname','phone','email','update user','delete user','user profile'
         ];
     }
 

@@ -8,14 +8,18 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
+use App\DataTables\productUserDataTable;
 class ProfileController extends Controller
 {
      // profile view
-     public function index(User $user)
+     public function index(productUserDataTable $dataTable)
      {
-         return view('profile.index');
+         
+         return $dataTable->render("profile.index");
      }
+ 
      
      public function changePassword(Request $request)
      {
@@ -26,7 +30,7 @@ class ProfileController extends Controller
      {
          
          $this->validate($request, [
-             'current_password' => 'required|string',
+             'current_password' => 'required|string|password',
              'new_password' => 'required|confirmed|min:8|string'
          ]);
          $auth = Auth::user();
@@ -48,5 +52,19 @@ class ProfileController extends Controller
          $user->save();
          return back()->with('success', "Password Changed Successfully");
      }
+     public function checkprofile(){
+       
+            return redirect()->route('dash.info');
+     
+       
+     }
+     public function dashInfo(){
+        $productCount = Product::all()->count();
+        $userCount = User::all()->count();
+        $authuserCount = User::where("code",null)->count();
+        $adminCount = User::where('user_type','admin')->count();
+
+        return view('Admin.dashbord',compact('productCount','userCount','adminCount','authuserCount'));
+    }
 
 }

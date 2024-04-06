@@ -1,42 +1,69 @@
 @extends('layouts.master')
+@extends('layouts.sidebar')
 @section('content')
-<div class="row">
-<div class="col-md-12">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title"> 
-                <a>Product count</a>
-            </h4>
+@if (Auth::user()->user_type == 'admin')
+<section class="content">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-aqua">
+        <div class="inner">
+          <h3>{{ $userCount }}</h3>
+          <p>All User</p>
         </div>
+        <div class="icon">
+          <i class="ion ion-bag"></i>
+        </div>
+        <a href="{{route('admin.showUser')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-green">
+        <div class="inner">
+          <h3>{{$authuserCount}}</h3>
+          <p>Auth user</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+        </div>
+    
+      </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-yellow">
+        <div class="inner">
+          <h3>{{$productCount}}</h3>
+          <p>Total product</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-person-add"></i>
+        </div>
+        <a href="{{route('admin.showProduct')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-red">
+        <div class="inner">
+          <h3>{{$adminCount}}</h3>
+          <p>Total admin</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-pie-graph"></i>
+        </div>
+        
+      </div>
+    </div><!-- ./col -->
+  </div><!-- /.row -->
+  <!-- Main row -->
 
-        <div class="card-body">
-            <a >{{$productCount}}</a>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title"> 
-                <a>User count</a>
-            </h4>
-        </div>
 
-        <div class="card-body">
-            <a >{{$userCount}}</a>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title"> 
-                <a>Admin count</a>
-            </h4>
-        </div>
+</section><!-- /.content -->
+@endif
 
-        <div class="card-body">
-            <a >{{$adminCount}}</a>
-        </div>
-    </div>
-</div>
-</div>
 @endsection
 
 
